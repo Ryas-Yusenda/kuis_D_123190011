@@ -26,8 +26,12 @@ class DetailPage extends StatelessWidget {
     required this.imageUrls,
   }) : super(key: key);
 
-  void _launchURL() async {
-    if (!await launch(appLink)) throw 'Could not launch Aapp Link';
+  _launchURL() async {
+    if (await canLaunch(appLink)) {
+      await launch(appLink);
+    } else {
+      throw 'Could not launch $appLink';
+    }
   }
 
   @override
@@ -78,9 +82,7 @@ class DetailPage extends StatelessWidget {
                 height: 16,
               ),
               ElevatedButton(
-                onPressed: () {
-                  _launchURL();
-                }, // Respon ketika button ditekan
+                onPressed: _launchURL, // Respon ketika button ditekan
                 child: Text("Lihat Aplikasi"),
               ),
               const SizedBox(
